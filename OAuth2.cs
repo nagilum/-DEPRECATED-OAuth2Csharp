@@ -1,4 +1,4 @@
-﻿// @file
+﻿﻿// @file
 // A lightweight library for OAuth2 authentication.
 //
 // @author
@@ -7,7 +7,6 @@
 // @url
 // https://github.com/nagilum/OAuth2Csharp
 
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.Web;
+using System.Web.Script.Serialization;
 
 /// <summary>
 /// Authorization, refresh, and validation of users through OAuth2.
@@ -183,13 +183,18 @@ public class OAuth2 {
 				this.buildQueryString(parameters);
 
 			var resp = this.makeWebRequest(url);
+			var code = "";
 
-			var json = JObject.Parse(resp);
-			var code = json.Properties().SingleOrDefault(p => p.Name == "code");
+			try {
+				code = new JavaScriptSerializer().Deserialize<OAuth2CodeResponse>(resp).Code;
+			}
+			catch (Exception ex) {
+				this.Error = "Unable to parse JSON response.";
+				this.ErrorDescription = ex.Message;
+			}
 
-			if (code != null &&
-				code.Value != null)
-				this.handleCodeResponse(code.Value.ToString());
+			if (!string.IsNullOrWhiteSpace(code))
+				this.handleCodeResponse(code);
 
 			if (this.IsAuthorized)
 				return;
@@ -286,25 +291,22 @@ public class OAuth2 {
 
 		if (resp.StartsWith("{") &&
 		    resp.EndsWith("}")) {
-			var json = JObject.Parse(resp);
-			var accessToken = json.Properties().SingleOrDefault(p => p.Name == "access_token");
-			var expiresIn = json.Properties().SingleOrDefault(p => p.Name == "expires_in");
-			var tokenType = json.Properties().SingleOrDefault(p => p.Name == "token_type");
+			try {
+				var cr = new JavaScriptSerializer().Deserialize<OAuth2CodeResponse>(resp);
 
-			if (accessToken != null &&
-			    accessToken.Value != null)
-				this.AccessToken = accessToken.Value.ToString();
+				if (!string.IsNullOrWhiteSpace(cr.Access_Token))
+					this.AccessToken = cr.Access_Token;
 
-			if (expiresIn != null &&
-			    expiresIn.Value != null) {
-				int exp;
-				if (int.TryParse(expiresIn.Value.ToString(), out exp))
-					this.AccessTokenExpiration = DateTime.Now.AddSeconds(exp);
+				if (cr.Expires_In > 0)
+					this.AccessTokenExpiration = DateTime.Now.AddSeconds(cr.Expires_In);
+
+				if (!string.IsNullOrWhiteSpace(cr.Token_Type))
+					this.TokenType = cr.Token_Type;
 			}
-
-			if (tokenType != null &&
-			    tokenType.Value != null)
-				this.TokenType = tokenType.Value.ToString();
+			catch (Exception ex) {
+				this.Error = "Unable to parse JSON response.";
+				this.ErrorDescription = ex.Message;
+			}
 		}
 		else {
 			foreach (var entry in resp.Split('&')) {
@@ -347,51 +349,13 @@ public class OAuth2 {
 			return;
 
 		this.UserInfoSerialized = resp;
-		this.UserInfo = new OAuth2UserInfo();
 
-		var json = JObject.Parse(resp);
-
-		foreach (var property in json.Properties()) {
-			switch (property.Name.ToLower()) {
-				case "id":
-					this.UserInfo.ID = property.Value.ToString();
-					break;
-
-				case "email":
-					this.UserInfo.Email = property.Value.ToString();
-					break;
-
-				case "first_name":
-					this.UserInfo.FirstName = property.Value.ToString();
-					break;
-
-				case "last_name":
-					this.UserInfo.LastName = property.Value.ToString();
-					break;
-
-				case "gender":
-					this.UserInfo.Gender = property.Value.ToString();
-					break;
-
-				case "locale":
-					this.UserInfo.Locale = property.Value.ToString();
-					break;
-
-				case "name":
-					this.UserInfo.Name = property.Value.ToString();
-					break;
-
-				case "timezone":
-					int timeZone;
-					if (int.TryParse(property.Value.ToString(), out timeZone))
-						this.UserInfo.TimeZone = timeZone;
-
-					break;
-
-				case "username":
-					this.UserInfo.Username = property.Value.ToString();
-					break;
-			}
+		try {
+			this.UserInfo = new JavaScriptSerializer().Deserialize<OAuth2UserInfo>(resp);
+		}
+		catch (Exception ex) {
+			this.Error = "Unable to parse JSON response.";
+			this.ErrorDescription = ex.Message;
 		}
 	}
 
@@ -437,7 +401,10 @@ public class OAuth2 {
 
 			return resp;
 		}
-		catch {}
+		catch (Exception ex) {
+			this.Error = "Unable to properly make HTTP request.";
+			this.ErrorDescription = ex.Message;
+		}
 
 		return null;
 	}
@@ -475,6 +442,31 @@ public class OAuth2 {
 		/// Provider-scope, if any.
 		/// </summary>
 		public string Scope { get; set; }
+	}
+
+	/// <summary>
+	/// Object for json parsed code-response from provider.
+	/// </summary>
+	private class OAuth2CodeResponse {
+		/// <summary>
+		/// Code from provider.
+		/// </summary>
+		public string Code { get; set; }
+
+		/// <summary>
+		/// Token issued by the provider.
+		/// </summary>
+		public string Access_Token { get; set; }
+
+		/// <summary>
+		/// Amount of second til token expires.
+		/// </summary>
+		public int Expires_In { get; set; }
+
+		/// <summary>
+		/// The type of token issued by the provider.
+		/// </summary>
+		public string Token_Type { get; set; }
 	}
 
 	/// <summary>
