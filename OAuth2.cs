@@ -2,7 +2,7 @@
 // A lightweight library for OAuth2 authentication.
 //
 // @author
-// Stian Hanger
+// Stian Hanger <pdnagilum@gmail.com>
 //
 // @url
 // https://github.com/nagilum/OAuth2Csharp
