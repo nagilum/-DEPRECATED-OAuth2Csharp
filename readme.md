@@ -1,4 +1,5 @@
-# OAuth2 lib for C\#
+OAuth2 lib for C#
+-----------------
 
 A lightweight library for OAuth2 authentication.
 
