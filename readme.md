@@ -2,7 +2,13 @@
 
 A lightweight library for OAuth2 authentication.
 
-#2 Usage:
+#2 Prerequisite
+
+This library uses the Newtonsoft JSON lib to parse response JSON from the
+providers. You can find more information about it and how to add it here:
+https://www.nuget.org/packages/Newtonsoft.Json
+
+#2 Usage
 
 Put this code on the login page:
 
