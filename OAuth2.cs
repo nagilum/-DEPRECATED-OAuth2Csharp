@@ -6,7 +6,6 @@
  * Stian Hanger <pdnagilum@gmail.com>
  */
 
-using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -412,8 +411,6 @@ public class OAuth2 {
 	/// <param name="url">URL to request.</param>
 	/// <returns>String of response.</returns>
 	private string makeWebRequest(string url) {
-		Debug.WriteLine("TWIDDLE => URL: " + url);
-
 		try {
 			var req = WebRequest.Create(url);
 			var res = req.GetResponse();
@@ -433,8 +430,6 @@ public class OAuth2 {
 
 			var reader = new StreamReader(stream);
 			var resp = reader.ReadToEnd();
-
-			Debug.WriteLine("TWIDDLE => Response: " + resp);
 
 			reader.Close();
 			stream.Close();
