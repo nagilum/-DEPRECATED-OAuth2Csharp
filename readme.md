@@ -1,14 +1,14 @@
-#1 OAuth2 lib for C#
+# OAuth2 lib for C#
 
 A lightweight library for OAuth2 authentication.
 
-#2 Prerequisite
+## Prerequisite
 
 This library uses the Newtonsoft JSON lib to parse response JSON from the
 providers. You can find more information about it and how to add it here:
 https://www.nuget.org/packages/Newtonsoft.Json
 
-#2 Usage
+## Usage
 
 Put this code on the login page:
 
@@ -70,7 +70,7 @@ if (oauth2.IsAuthorized) {
 }
 ```
 
-#2 Properties
+## Properties
 
 **AccessToken** (string)
 
@@ -104,7 +104,7 @@ formatted info to the UserInfo class.
 If an error occurred during the auth process, this is where the info about it
 will be.
 
-#2 Additional Functions
+## Additional Functions
 
 **AddEndpoint**
 
