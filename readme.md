@@ -3,12 +3,6 @@ OAuth2 lib for C#
 
 A lightweight library for OAuth2 authentication.
 
-## Prerequisite
-
-This library uses the Newtonsoft JSON lib to parse response JSON from the
-providers. You can find more information about it and how to add it here:
-https://www.nuget.org/packages/Newtonsoft.Json
-
 ## Usage
 
 Put this code on the login page:
