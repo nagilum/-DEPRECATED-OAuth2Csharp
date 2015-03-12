@@ -1,10 +1,11 @@
-﻿/**
- * @file
- * Authorization, refresh, and validation of users through OAuth2.
- * 
- * @author
- * Stian Hanger <pdnagilum@gmail.com>
- */
+﻿// @file
+// A lightweight library for OAuth2 authentication.
+//
+// @author
+// Stian Hanger
+//
+// @url
+// https://github.com/nagilum/OAuth2Csharp
 
 using Newtonsoft.Json.Linq;
 using System;
