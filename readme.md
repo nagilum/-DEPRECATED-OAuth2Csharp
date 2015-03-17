@@ -3,7 +3,14 @@ OAuth2 lib for C#
 
 A lightweight library for OAuth2 authentication.
 
-## Usage
+Requirements
+------------
+
+The only file in the given solution that is nessecary is the OAuth2.cs file in the OAuth2Class folder.
+The rest is just added as an example of how you can structure the entire thing, either use is as a direct .cs file or as a assembly DLL.
+
+Usage
+-----
 
 Put this code on the login page:
 
@@ -65,7 +72,8 @@ if (oauth2.IsAuthorized) {
 }
 ```
 
-## Properties
+Properties
+----------
 
 **AccessToken** (string)
 
@@ -99,7 +107,8 @@ formatted info to the UserInfo class.
 If an error occurred during the auth process, this is where the info about it
 will be.
 
-## Additional Functions
+Additional Functions
+--------------------
 
 **AddEndpoint**
 
