@@ -1,0 +1,5 @@
+C:\Users\stianh\Documents\GitHub\OAuth2\OAuth2Class\bin\Debug\OAuth2Class.dll
+C:\Users\stianh\Documents\GitHub\OAuth2\OAuth2Class\bin\Debug\OAuth2Class.pdb
+C:\Users\stianh\Documents\GitHub\OAuth2\OAuth2Class\obj\Debug\OAuth2Class.csprojResolveAssemblyReference.cache
+C:\Users\stianh\Documents\GitHub\OAuth2\OAuth2Class\obj\Debug\OAuth2Class.dll
+C:\Users\stianh\Documents\GitHub\OAuth2\OAuth2Class\obj\Debug\OAuth2Class.pdb
