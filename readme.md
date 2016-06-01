@@ -1,4 +1,4 @@
-# DEPRICATED
+# DEPRECATED
 
 This code is rather messy and I've written a more lean version over at https://github.com/nagilum/oauth2-csharp
 
