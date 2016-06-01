@@ -4,7 +4,7 @@ This code is rather messy and I've written a more lean version over at https://g
 
 
 
-## OAuth2 lib for C#
+## OAuth2 lib for Csharp
 
 A lightweight library for OAuth2 authentication.
 
